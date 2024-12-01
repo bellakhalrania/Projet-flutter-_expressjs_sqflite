@@ -7,7 +7,8 @@ const PORT = 3000;
 
 // Middleware
 app.use(bodyParser.json());
-app.use('/uploads', express.static('uploads')); // Serve images from the uploads directory
+app.use('/uploads', express.static('uploads'));
+ // Serve images from the uploads directory
 
 // Routes
 app.use('/api/books', bookRoutes);

@@ -49,5 +49,27 @@ db.serialize(() => {
 
 
 
+db.serialize(() => {
+    // Table for borrow requests
+    db.run(`
+        CREATE TABLE IF NOT EXISTS borrow_requests (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            book_id INTEGER NOT NULL,
+            user_id INTEGER NOT NULL,
+            status TEXT DEFAULT 'pending', -- pending, accepted, refused
+            request_date TEXT DEFAULT (datetime('now')),
+            FOREIGN KEY (book_id) REFERENCES books(id),
+            FOREIGN KEY (user_id) REFERENCES users(id)
+        )
+    `, (err) => {
+        if (err) {
+            console.error('Error creating borrow_requests table:', err.message);
+        }
+    });
+});
+
+
+
+
 
 module.exports = db;

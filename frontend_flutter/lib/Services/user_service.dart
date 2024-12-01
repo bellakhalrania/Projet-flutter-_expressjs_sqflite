@@ -38,4 +38,9 @@ class AuthService {
   Future<void> logout() async {
     await _storage.deleteAll(); // Supprime le token et le rôle
   }
+
+
+
+
+
 }

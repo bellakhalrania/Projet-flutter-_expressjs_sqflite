@@ -57,15 +57,20 @@ class _AddBookScreenState extends State<AddBookScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Add Book'),
-      ),
+
       body: Padding(
         padding: const EdgeInsets.all(16.0),
+
         child: Form(
           key: _formKey,
           child: Column(
             children: [
+              Image.asset(
+                'assets/background2.jpg', // Remplacez par le chemin de votre image
+                height: 200,
+                width: 300,
+              ),
+              SizedBox(height: 50),
               TextFormField(
                 decoration: InputDecoration(labelText: 'Title'),
                 validator: (value) {

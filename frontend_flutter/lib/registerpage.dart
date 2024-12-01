@@ -57,6 +57,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            Image.asset(
+              'assets/registration.png', // Remplacez par le chemin de votre image
+              height: 200,
+              width: 300,
+            ),
+            SizedBox(height: 50),
             TextField(
               controller: _nameController,
               decoration: InputDecoration(labelText: 'Name'),

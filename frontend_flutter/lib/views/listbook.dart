@@ -62,7 +62,9 @@ class _BookListScreenState extends State<BookListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
 
-      body: FutureBuilder<List<Book>>(
+
+      body:
+      FutureBuilder<List<Book>>(
         future: books,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {

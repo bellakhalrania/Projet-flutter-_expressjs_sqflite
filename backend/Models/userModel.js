@@ -2,34 +2,39 @@ const db = require('../Database/database');
 
 const UserModel = {
     createUser: (user, callback) => {
-        const sql = `INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)`;
-        db.run(sql, [user.name, user.email, user.password, user.role], function (err) {
-            callback(err, { id: this.lastID });
-        });
+        const { name, email, password, role } = user;
+        db.run(
+            `INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)`,
+            [name, email, password, role],
+            function (err) {
+                callback(err, { id: this.lastID });
+            }
+        );
+    },
+
+    getUserByEmail: (email, callback) => {
+        db.get(`SELECT * FROM users WHERE email = ?`, [email], callback);
     },
 
     getUserById: (id, callback) => {
-        const sql = `SELECT id, name, email, role FROM users WHERE id = ?`;
-        db.get(sql, [id], callback);
+        db.get(`SELECT * FROM users WHERE id = ?`, [id], callback);
     },
 
     getAllUsers: (callback) => {
-        const sql = `SELECT id, name, email, role FROM users`;
-        db.all(sql, [], callback);
+        db.all(`SELECT * FROM users`, [], callback);
     },
 
     updateUser: (id, user, callback) => {
-        const sql = `
-            UPDATE users
-            SET name = ?, email = ?, role = ?
-            WHERE id = ?
-        `;
-        db.run(sql, [user.name, user.email, user.role, id], callback);
+        const { name, email, role } = user;
+        db.run(
+            `UPDATE users SET name = ?, email = ?, role = ? WHERE id = ?`,
+            [name, email, role, id],
+            callback
+        );
     },
 
     deleteUser: (id, callback) => {
-        const sql = `DELETE FROM users WHERE id = ?`;
-        db.run(sql, [id], callback);
+        db.run(`DELETE FROM users WHERE id = ?`, [id], callback);
     },
 };
 

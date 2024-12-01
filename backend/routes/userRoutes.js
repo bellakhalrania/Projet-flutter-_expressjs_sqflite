@@ -1,12 +1,12 @@
 const express = require('express');
 const UserController = require('../Controllers/userController');
-
 const router = express.Router();
 
-router.get('/', UserController.getAllUsers); // Obtenir tous les utilisateurs
-router.get('/:id', UserController.getUserById); // Obtenir un utilisateur par ID
-router.post('/', UserController.createUser); // Créer un utilisateur
-router.put('/:id', UserController.updateUser); // Mettre à jour un utilisateur
-router.delete('/:id', UserController.deleteUser); // Supprimer un utilisateur
+router.post('/register', UserController.register);
+router.post('/login', UserController.login);
+router.get('/', UserController.getAllUsers); // Pour admin uniquement
+router.get('/:id', UserController.getUserById);
+router.put('/:id', UserController.updateUser);
+router.delete('/:id', UserController.deleteUser);
 
 module.exports = router;

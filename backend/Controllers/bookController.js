@@ -61,19 +61,20 @@ const BookController = {
     updateBook: (req, res) => {
         const { id } = req.params;
         const { title, author, year } = req.body;
-
+    
+        // Use the existing image if no new image is uploaded
         const book = {
             title,
             author,
-            year: year ? parseInt(year, 10) : undefined, // Parse only if provided
-            image: req.file ? req.file.path : req.body.image,
+            year: year ? parseInt(year, 10) : undefined,
+            image: req.file ? req.file.path : req.body.image, // Use existing image if no new image
         };
-
+    
         // Validate required fields
         if (!title || !author || (year && isNaN(book.year))) {
-            return res.status(400).json({ error: 'Title, author and valid year are required.' });
+            return res.status(400).json({ error: 'Title, author, and valid year are required.' });
         }
-
+    
         BookModel.updateBook(id, book, (err) => {
             if (err) return res.status(500).json({ error: err.message });
             res.json({ message: 'Book updated successfully' });

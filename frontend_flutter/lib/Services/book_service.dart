@@ -72,8 +72,12 @@ class BookService {
 
       // Add the image to the request if a new image is selected
       if (imageFile != null) {
+        // If a new image is selected, add it to the request
         var image = await http.MultipartFile.fromPath('image', imageFile.path);
         request.files.add(image);
+      } else {
+        // If no new image is selected, retain the existing image URL
+        request.fields['image'] = book.image!; // Ensure the existing image URL is sent
       }
 
       // Send the request

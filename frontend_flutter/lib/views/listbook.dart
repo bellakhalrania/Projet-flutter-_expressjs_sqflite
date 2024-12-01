@@ -49,7 +49,11 @@ class _BookListScreenState extends State<BookListScreen> {
   void updateBook(Book book) async {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => UpdateBookScreen(book: book)),
+      MaterialPageRoute(builder: (context) => UpdateBookScreen(
+        book: book,
+        onBookAdded: _refreshBooks,
+      ),
+      ),
     );
     widget.onRefresh();
   }

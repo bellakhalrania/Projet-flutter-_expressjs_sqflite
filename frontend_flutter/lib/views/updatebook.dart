@@ -7,9 +7,10 @@ import '../Models/book_model.dart';
 import '../Services/book_service.dart';
 
 class UpdateBookScreen extends StatefulWidget {
+  final VoidCallback onBookAdded;
   final Book book;
 
-  UpdateBookScreen({required this.book});
+  UpdateBookScreen({required this.book, required this.onBookAdded});
 
   @override
   _UpdateBookScreenState createState() => _UpdateBookScreenState();
@@ -24,13 +25,11 @@ class _UpdateBookScreenState extends State<UpdateBookScreen> {
   @override
   void initState() {
     super.initState();
-    // Initialisation des contrôleurs avec les valeurs actuelles du livre
     _titleController = TextEditingController(text: widget.book.title);
     _authorController = TextEditingController(text: widget.book.author);
-    _imageFile = null; // Pas d'image sélectionnée initialement
+    _imageFile = null; // No image selected initially
   }
 
-  // Fonction pour sélectionner une nouvelle image
   Future<void> _pickImage() async {
     final ImagePicker picker = ImagePicker();
     final XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -42,32 +41,39 @@ class _UpdateBookScreenState extends State<UpdateBookScreen> {
     }
   }
 
-  // Fonction pour mettre à jour le livre
   void _updateBook() async {
     if (_formKey.currentState!.validate()) {
       try {
-        // Créer un objet Book avec les nouvelles valeurs
+        // Determine image path: use the new image if selected, otherwise keep the existing image URL
+        String? imagePath = _imageFile?.path ?? widget.book.image;
+
         Book updatedBook = Book(
-          id: widget.book.id,  // Garder l'id original du livre
+          id: widget.book.id, // Keep the original book ID
           title: _titleController.text,
           author: _authorController.text,
-          year: widget.book.year,  // Garder l'année actuelle ou permettre sa modification
-          image: _imageFile?.path, // Mettre à jour l'image si elle est sélectionnée
+          year: widget.book.year, // Keep the current year or allow modification
+          image: imagePath, // Update the image if selected, otherwise use the existing image
         );
 
-        // Appeler le service pour mettre à jour le livre
+        // Call the service to update the book
         await BookService.updateBook(updatedBook, _imageFile);
 
-        // Retourner à l'écran précédent après la mise à jour réussie
+        // Call the callback to refresh the book list
+        widget.onBookAdded();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Book updated successfully!')),
+        );
+
+        // Navigate back after successful update
         Navigator.pop(context);
       } catch (e) {
-        // Gérer les erreurs ici, comme afficher un message d'erreur
         print('Error updating book: $e');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error updating book: $e')),
+        );
       }
     }
   }
-
-
 
   @override
   void dispose() {
@@ -88,7 +94,6 @@ class _UpdateBookScreenState extends State<UpdateBookScreen> {
           key: _formKey,
           child: ListView(
             children: [
-              // Champ pour le titre du livre
               TextFormField(
                 controller: _titleController,
                 decoration: InputDecoration(labelText: 'Title'),
@@ -99,7 +104,6 @@ class _UpdateBookScreenState extends State<UpdateBookScreen> {
                   return null;
                 },
               ),
-              // Champ pour l'auteur du livre
               TextFormField(
                 controller: _authorController,
                 decoration: InputDecoration(labelText: 'Author'),
@@ -110,7 +114,6 @@ class _UpdateBookScreenState extends State<UpdateBookScreen> {
                   return null;
                 },
               ),
-              // Affichage de l'image actuelle ou sélection d'une nouvelle image
               GestureDetector(
                 onTap: _pickImage,
                 child: Padding(
@@ -133,7 +136,6 @@ class _UpdateBookScreenState extends State<UpdateBookScreen> {
                   ),
                 ),
               ),
-              // Bouton pour soumettre le formulaire
               ElevatedButton(
                 onPressed: _updateBook,
                 child: Text('Update Book'),

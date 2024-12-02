@@ -52,10 +52,14 @@ class _LoginScreenState extends State<LoginScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Image.asset(
-              'assets/user1.png', // Remplacez par le chemin de votre image
+            Container(
               height: 200,
               width: 300,
+              child: Icon(
+                Icons.lock_person_sharp,
+                size: 200, // Adjust size
+                color: Colors.brown, // Change color if needed
+              ),
             ),
             SizedBox(height: 50),
             TextField(

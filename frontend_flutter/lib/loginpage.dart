@@ -31,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
       } else if (role == 'user') {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => UserScreen()),
+          MaterialPageRoute(builder: (context) => UserScreen(onRefresh: () {})),
         );
       }
     } else {

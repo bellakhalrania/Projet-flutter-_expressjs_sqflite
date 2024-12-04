@@ -1,10 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend_flutter/user/userhome.dart';
-
 import 'Services/user_service.dart';
 import 'admin/adminhome.dart';
-
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -16,6 +13,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  // Fonction pour effectuer le login
   void _login() async {
     final email = _emailController.text;
     final password = _passwordController.text;
@@ -29,9 +27,14 @@ class _LoginScreenState extends State<LoginScreen> {
           MaterialPageRoute(builder: (context) => AdminScreen()),
         );
       } else if (role == 'user') {
+        // Fonction de rafraîchissement à passer dans UserScreen
+        void onRefresh() {
+          print("Books list refreshed");
+        }
+
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => UserScreen(onRefresh: () {})),
+          MaterialPageRoute(builder: (context) => UserScreen(onRefresh: onRefresh)),
         );
       }
     } else {
@@ -44,10 +47,16 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Login",
-          style:   TextStyle(fontSize: 24.0, // Taille de la police
-              fontWeight: FontWeight.bold, // Poids de la police (facultatif)
-              color: Colors.brown,))),
+      appBar: AppBar(
+        title: Text(
+          "Login",
+          style: TextStyle(
+            fontSize: 24.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.brown,
+          ),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -57,8 +66,8 @@ class _LoginScreenState extends State<LoginScreen> {
               width: 300,
               child: Icon(
                 Icons.lock_person_sharp,
-                size: 200, // Adjust size
-                color: Colors.brown, // Change color if needed
+                size: 200,
+                color: Colors.brown,
               ),
             ),
             SizedBox(height: 50),
@@ -71,21 +80,20 @@ class _LoginScreenState extends State<LoginScreen> {
               controller: _passwordController,
               decoration: InputDecoration(labelText: 'Password'),
               obscureText: true,
-
             ),
             SizedBox(height: 16),
-        Container(
-          width: 350,
-            child: ElevatedButton(
-              onPressed: _login,
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white, // Change la couleur du texte du bouton
-                backgroundColor: Colors.grey, // Change la couleur du fond du bouton
-                padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0), // Ajuste le padding du bouton
+            Container(
+              width: 350,
+              child: ElevatedButton(
+                onPressed: _login,
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.grey,
+                  padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
+                ),
+                child: Text("Login"),
               ),
-              child: Text("Login"),
             ),
-          )
           ],
         ),
       ),

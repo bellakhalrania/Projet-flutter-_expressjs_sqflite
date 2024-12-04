@@ -1,42 +1,33 @@
-// lib/screens/book_screen.dart
-
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-
 import '../Models/book_model.dart';
 import '../Services/book_service.dart';
 import '../Services/borrow_service.dart';
 
-
 class UserScreen extends StatefulWidget {
-  final VoidCallback onRefresh; // Add the onRefresh parameter
+  final VoidCallback onRefresh; // Fonction callback pour rafraîchir les données
 
   UserScreen({required this.onRefresh});
 
   @override
-  _BookScreenState createState() => _BookScreenState();
+  _UserScreenState createState() => _UserScreenState();
 }
 
-class _BookScreenState extends State<UserScreen> {
+class _UserScreenState extends State<UserScreen> {
   late Future<List<Book>> books;
   String searchQuery = '';
 
-  // Remplacez ceci par l'ID réel de l'utilisateur connecté
-  final String currentUserId = "123";
+  final String currentUserId = "123"; // Remplacez par l'ID de l'utilisateur connecté
 
   @override
   void initState() {
     super.initState();
-    books = BookService.getBooks();
+    books = BookService.getBooks(); // Charger les livres au démarrage
   }
 
   Future<void> _fetchBooks() async {
-    books = BookService.getBooks();
+    books = BookService.getBooks(); // Recharger les livres
     setState(() {});
-  }
-
-  void _refreshBooks() {
-    _fetchBooks();
   }
 
   Future<void> _borrowBook(Book book) async {
@@ -45,7 +36,7 @@ class _BookScreenState extends State<UserScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('${book.title} borrowed successfully!')),
       );
-      widget.onRefresh();
+      widget.onRefresh(); // Appeler la fonction de rafraîchissement après un prêt réussi
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to borrow ${book.title}. Please try again.')),
@@ -57,11 +48,11 @@ class _BookScreenState extends State<UserScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Borrow Book'), // Titre en anglais
+        title: Text('Borrow Book'),
         actions: [
           IconButton(
             icon: Icon(Icons.refresh),
-            onPressed: _refreshBooks,
+            onPressed: _fetchBooks, // Rafraîchir les livres
           ),
         ],
       ),
@@ -107,8 +98,7 @@ class _BookScreenState extends State<UserScreen> {
                       child: ListTile(
                         leading: book.image != null && book.image!.isNotEmpty
                             ? CachedNetworkImage(
-                          imageUrl: "http://192.168.1.16:3000/" +
-                              book.image!.replaceAll("\\", "/"),
+                          imageUrl: "http://192.168.1.16:3000/" + book.image!.replaceAll("\\", "/"),
                           placeholder: (context, url) => CircularProgressIndicator(),
                           errorWidget: (context, url, error) => Icon(Icons.broken_image),
                           width: 50,
@@ -120,7 +110,7 @@ class _BookScreenState extends State<UserScreen> {
                         subtitle: Text(book.author),
                         trailing: ElevatedButton(
                           onPressed: () => _borrowBook(book),
-                          child: Text('Borrow'), // Texte en anglais
+                          child: Text('Borrow'),
                         ),
                       ),
                     );

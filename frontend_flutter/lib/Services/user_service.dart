@@ -19,16 +19,26 @@ class AuthService {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       final token = data['token'];
-      final role = data['role'];
+      final user = data['user'];
 
-      // Stocker le token et le rôle
+      // Stocker le token et les informations utilisateur
       await _storage.write(key: 'token', value: token);
-      await _storage.write(key: 'role', value: role);
+      await _storage.write(key: 'userId', value: user['id'].toString());
+      await _storage.write(key: 'userName', value: user['name']);
+      await _storage.write(key: 'role', value: user['role']);
 
       return true;
     } else {
       return false;
     }
+  }
+
+  Future<String?> getUserId() async {
+    return await _storage.read(key: 'userId');
+  }
+
+  Future<String?> getUserName() async {
+    return await _storage.read(key: 'userName');
   }
 
   Future<String?> getRole() async {

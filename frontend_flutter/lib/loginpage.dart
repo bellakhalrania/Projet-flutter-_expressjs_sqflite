@@ -21,20 +21,21 @@ class _LoginScreenState extends State<LoginScreen> {
     final success = await _authService.login(email, password);
     if (success) {
       final role = await _authService.getRole();
+      final userId = await _authService.getUserId();
+      final userName = await _authService.getUserName();
+
+      print('User ID: $userId');
+      print('User Name: $userName');
+
       if (role == 'admin') {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => AdminScreen()),
         );
       } else if (role == 'user') {
-        // Fonction de rafraîchissement à passer dans UserScreen
-        void onRefresh() {
-          print("Books list refreshed");
-        }
-
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => UserScreen(onRefresh: onRefresh)),
+          MaterialPageRoute(builder: (context) => UserScreen()),
         );
       }
     } else {
@@ -43,6 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     }
   }
+
 
   @override
   Widget build(BuildContext context) {

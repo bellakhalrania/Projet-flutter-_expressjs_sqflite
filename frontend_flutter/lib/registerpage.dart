@@ -36,7 +36,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ));
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => UserScreen(onRefresh: () {}))
+        MaterialPageRoute(builder: (context) => UserScreen())
       );
     } else {
       // Si une erreur survient

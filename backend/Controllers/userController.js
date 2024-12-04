@@ -34,31 +34,41 @@ const UserController = {
         }
     },
 
-    // Connexion d'un utilisateur
-    login: (req, res) => {
-        const { email, password } = req.body;
+   // Connexion d'un utilisateur
+login: (req, res) => {
+    const { email, password } = req.body;
 
-        if (!email || !password) {
-            return res.status(400).json({ error: 'Email and password are required.' });
+    if (!email || !password) {
+        return res.status(400).json({ error: 'Email and password are required.' });
+    }
+
+    // Vérifier si l'utilisateur existe
+    UserModel.getUserByEmail(email, async (err, user) => {
+        if (err) return res.status(500).json({ error: err.message });
+        if (!user) return res.status(404).json({ error: 'User not found.' });
+
+        // Vérifier le mot de passe
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({ error: 'Invalid email or password.' });
         }
 
-        // Vérifier si l'utilisateur existe
-        UserModel.getUserByEmail(email, async (err, user) => {
-            if (err) return res.status(500).json({ error: err.message });
-            if (!user) return res.status(404).json({ error: 'User not found.' });
+        // Générer un token JWT
+        const token = jwt.sign({ id: user.id, role: user.role }, SECRET_KEY, { expiresIn: '1h' });
 
-            // Vérifier le mot de passe
-            const isMatch = await bcrypt.compare(password, user.password);
-            if (!isMatch) {
-                return res.status(401).json({ error: 'Invalid email or password.' });
-            }
-
-            // Générer un token JWT
-            const token = jwt.sign({ id: user.id, role: user.role }, SECRET_KEY, { expiresIn: '1h' });
-
-            res.json({ message: 'Login successful', token, role: user.role });
+        // Retourner les informations de l'utilisateur
+        res.json({
+            message: 'Login successful',
+            token,
+            user: {
+                id: user.id,
+                name: user.name,
+                role: user.role,
+            },
         });
-    },
+    });
+},
+
 
     // Obtenir tous les utilisateurs (admin uniquement)
     getAllUsers: (req, res) => {

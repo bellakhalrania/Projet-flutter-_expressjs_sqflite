@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_flutter/registerpage.dart';
 import 'package:frontend_flutter/user/userhome.dart';
 import 'Services/user_service.dart';
 import 'admin/adminhome.dart';
@@ -94,6 +95,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
                 ),
                 child: Text("Login"),
+              ),
+            ),
+            SizedBox(height: 20),
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RegisterScreen()),
+                );
+              },
+              child: Text(
+                "Don't have an account? Register here",
+                style: TextStyle(color: Colors.brown),
               ),
             ),
           ],

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:frontend_flutter/Services/user_service.dart';
 import 'package:frontend_flutter/user/userhome.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'loginpage.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -9,40 +10,45 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  final FlutterSecureStorage _storage = FlutterSecureStorage();
+  final AuthService _authService = AuthService();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   String _role = 'user';
+  final _formKey = GlobalKey<FormState>(); // Key for form validation
 
-  // Fonction pour envoyer la requête d'enregistrement
-  Future<void> registerUser() async {
-    final url = 'http://192.168.1.16:3000/api/users/register'; // Remplacez par l'URL de votre API
-    final response = await http.post(
-      Uri.parse(url),
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode({
-        'name': _nameController.text,
-        'email': _emailController.text,
-        'password': _passwordController.text,
-        'role': _role,
-      }),
-    );
+  // Function to register user
+  void registerUser() async {
+    if (!_formKey.currentState!.validate()) {
+      return; // If the form is not valid, stop execution
+    }
 
-    if (response.statusCode == 201) {
-      // Si l'utilisateur est créé avec succès
-      final responseData = json.decode(response.body);
+    try {
+      // Récupérer le token et les infos utilisateur
+      final response = await _authService.register(
+        _nameController.text,
+        _emailController.text,
+        _passwordController.text,
+        _role,
+      );
+
+      final userName = _nameController.text;
+      await _storage.write(key: 'userName', value: userName);
+
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(responseData['message']),
+        content: Text('Registration successful!'),
       ));
+
+      // Navigate to the user home screen
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => UserScreen())
+        MaterialPageRoute(builder: (context) => UserScreen()),
       );
-    } else {
-      // Si une erreur survient
-      final responseData = json.decode(response.body);
+    } catch (e) {
+      // If an error occurs during registration
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(responseData['error']),
+        content: Text('Registration failed: ${e.toString()}'),
       ));
     }
   }
@@ -55,50 +61,112 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Container(
-              height: 200,
-              width: 300,
-              child: Icon(
-                Icons.lock_person_sharp,
-                size: 200, // Adjust size
-                color: Colors.brown, // Change color if needed
-              ),
-            ),
-            SizedBox(height: 50),
-            TextField(
-              controller: _nameController,
-              decoration: InputDecoration(labelText: 'Name'),
-            ),
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(labelText: 'Email'),
-              keyboardType: TextInputType.emailAddress,
-            ),
-            TextField(
-              controller: _passwordController,
-              decoration: InputDecoration(labelText: 'Password'),
-              obscureText: true,
-            ),
-            SizedBox(height: 20),
-            Container(
-              width: 350,
-              child: ElevatedButton(
-                onPressed: registerUser,
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white, // Change la couleur du texte du bouton
-                  backgroundColor: Colors.grey, // Change la couleur du fond du bouton
-                  padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0), // Ajuste le padding du bouton
+        child: Form(
+          key: _formKey, // Use the key for form validation
+          child: Column(
+            children: [
+              Container(
+                height: 200,
+                width: 300,
+                child: Icon(
+                  Icons.lock_person_sharp,
+                  size: 200, // Adjust size
+                  color: Colors.brown, // Change color if needed
                 ),
-                child: Text('Register'),
-
               ),
-            )
-
-
-
-          ],
+              SizedBox(height: 50),
+              TextFormField(
+                controller: _nameController,
+                decoration: InputDecoration(labelText: 'Name'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your name';
+                  }
+                  return null; // If validation is successful
+                },
+              ),
+              TextFormField(
+                controller: _emailController,
+                decoration: InputDecoration(labelText: 'Email'),
+                keyboardType: TextInputType.emailAddress,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your email';
+                  }
+                  // Email format validation
+                  if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) {
+                    return 'Please enter a valid email address';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _passwordController,
+                decoration: InputDecoration(labelText: 'Password'),
+                obscureText: true,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your password';
+                  }
+                  if (value.length < 6) {
+                    return 'Password must be at least 6 characters';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 20),
+              // DropdownButton for role selection
+              DropdownButtonFormField<String>(
+                value: _role,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    _role = newValue!;
+                  });
+                },
+                items: <String>['user', 'admin']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                decoration: InputDecoration(labelText: 'Role'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please select a role';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 20),
+              Container(
+                width: 350,
+                child: ElevatedButton(
+                  onPressed: registerUser,
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white, // Button text color
+                    backgroundColor: Colors.grey, // Button background color
+                    padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
+                  ),
+                  child: Text('Register'),
+                ),
+              ),
+              SizedBox(height: 20),
+              TextButton(
+                onPressed: () {
+                  // Navigate to login screen
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                  );
+                },
+                child: Text(
+                  'Already have an account? Login here',
+                  style: TextStyle(color: Colors.brown),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

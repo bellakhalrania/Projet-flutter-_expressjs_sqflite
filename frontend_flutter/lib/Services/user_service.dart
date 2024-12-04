@@ -58,6 +58,30 @@ class AuthService {
     }
   }
 
+// Register function
+  // Register function
+  Future<bool> register(String name, String email, String password, String role) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/register'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'name': name,
+        'email': email,
+        'password': password,
+        'role': role,
+      })
+    );
 
-
+    if (response.statusCode == 201) {
+      final data = jsonDecode(response.body);
+      final id = data['id'];
+      await _storage.write(key: 'userId', value: id.toString());
+      // Store the token and user information
+      return true;
+    } else {
+      // Handle failure (for example, duplicate email or validation errors)
+      final errorData = jsonDecode(response.body);
+      throw Exception(errorData['error'] ?? 'An unknown error occurred');
+    }
+  }
 }

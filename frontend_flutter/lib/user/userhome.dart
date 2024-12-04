@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:frontend_flutter/user/userprofil.dart';
 import 'bookScreen.dart';
 import 'borrowscreen.dart';
 class UserScreen extends StatefulWidget {
@@ -18,6 +19,7 @@ class _UserScreenState extends State<UserScreen> {
     _screens = [
       BookScreen(onRefresh: _refreshBooks),
       BorrowScreen(),
+      UserProfile(),
     ];
     _loadUserData(); // Load user data on init
   }
@@ -83,7 +85,7 @@ class _UserScreenState extends State<UserScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_pin),
-            label: 'users',
+            label: 'profil',
           ),
         ],
         currentIndex: _selectedIndex,

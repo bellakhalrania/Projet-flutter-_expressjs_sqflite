@@ -81,7 +81,7 @@ class BorrowService {
 
   /// Récupère les livres empruntés par un utilisateur spécifique
   static Future<List<BorrowRequest>> getUserBorrowedBooks(String userId) async {
-    final url = Uri.parse('$_baseUrl/borrow/user/$userId');
+    final url = Uri.parse('$_baseUrl/user/$userId');
     try {
       final response = await http.get(url);
 
@@ -89,7 +89,7 @@ class BorrowService {
         List<dynamic> data = jsonDecode(response.body);
         return data.map((json) => BorrowRequest.fromJson(json)).toList();
       } else {
-        print('Erreur: ${response.body}');
+        print('Error: ${response.body}');
         return [];
       }
     } catch (e) {

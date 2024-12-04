@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'bookScreen.dart';
+import 'borrowscreen.dart';
 class UserScreen extends StatefulWidget {
   @override
   _UserScreenState createState() => _UserScreenState();
@@ -16,6 +17,7 @@ class _UserScreenState extends State<UserScreen> {
     super.initState();
     _screens = [
       BookScreen(onRefresh: _refreshBooks),
+      BorrowScreen(),
     ];
     _loadUserData(); // Load user data on init
   }
@@ -77,7 +79,7 @@ class _UserScreenState extends State<UserScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add),
-            label: 'Add Book',
+            label: 'borrowed book',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_pin),

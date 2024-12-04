@@ -7,7 +7,7 @@ import '../Models/borrowRequest.dart';
 
 class BorrowService {
   // Remplacez par l'URL de votre serveur backend
-  static const String _baseUrl = 'http://192.168.1.16:3000';
+  static const String _baseUrl = 'http://192.168.1.16:3000/api';
 
   /// Crée une demande d'emprunt
   static Future<bool> createBorrowRequest(String bookId, String userId) async {
@@ -81,15 +81,15 @@ class BorrowService {
 
   /// Récupère les livres empruntés par un utilisateur spécifique
   static Future<List<BorrowRequest>> getUserBorrowedBooks(String userId) async {
-    final url = Uri.parse('$_baseUrl/user/$userId');
+    final url = Uri.parse('$_baseUrl/borrow/user/$userId');  // Correct the URL
     try {
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
-        List<dynamic> data = jsonDecode(response.body);
-        return data.map((json) => BorrowRequest.fromJson(json)).toList();
+        final List<dynamic> responseData = json.decode(response.body);
+        return responseData.map((data) => BorrowRequest.fromJson(data)).toList();
       } else {
-        print('Error: ${response.body}');
+        print('Erreur: ${response.body}');
         return [];
       }
     } catch (e) {

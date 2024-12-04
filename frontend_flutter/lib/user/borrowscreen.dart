@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
 import '../Models/borrowRequest.dart';
 import '../Services/borrow_service.dart';
-
 
 class BorrowScreen extends StatefulWidget {
   @override
@@ -65,7 +63,16 @@ class _BorrowScreenState extends State<BorrowScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Author: ${book.author}'),
-                      Text('Status: ${book.status}'),
+                      Text(
+                        'Status: ${book.status}',
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                          color: _getStatusColor(book.status), // Dynamically change color based on status
+                        ),
+                      ),
+
+
                       Text('Request Date: ${book.requestDate}'),
                     ],
                   ),
@@ -76,5 +83,17 @@ class _BorrowScreenState extends State<BorrowScreen> {
         },
       ),
     );
+  }
+  Color _getStatusColor(String status) {
+    switch (status.toLowerCase()) {
+      case 'accepted':
+        return Colors.green; // Green for accepted status
+      case 'pending':
+        return Colors.orange; // Orange for pending status
+      case 'refused':
+        return Colors.red; // Red for refused status
+      default:
+        return Colors.black; // Default color
+    }
   }
 }

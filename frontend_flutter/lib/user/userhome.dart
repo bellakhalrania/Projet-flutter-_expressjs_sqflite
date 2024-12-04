@@ -79,7 +79,7 @@ class _UserScreenState extends State<UserScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add),
-            label: 'borrowed book',
+            label: 'borrowed books',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_pin),

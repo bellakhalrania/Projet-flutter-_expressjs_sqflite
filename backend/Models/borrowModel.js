@@ -28,7 +28,7 @@ const BorrowModel = {
             SELECT b.id, b.title, b.author, br.status, br.request_date
             FROM borrow_requests br
             JOIN books b ON br.book_id = b.id
-            WHERE br.user_id = ? AND br.status = 'accepted'
+            WHERE br.user_id = ? 
         `;
         db.all(sql, [userId], callback);
     },

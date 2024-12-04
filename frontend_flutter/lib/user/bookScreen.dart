@@ -119,7 +119,7 @@ class _BookScreenState extends State<BookScreen> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
+                          backgroundColor: Color(0xFFB67332),
                           foregroundColor: Colors.white,
                           padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                         ),

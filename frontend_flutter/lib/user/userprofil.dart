@@ -33,9 +33,12 @@ class _UserProfileState extends State<UserProfile> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.white70, Colors.lightBlue],
+            colors: [
+              Colors.white70,
+              Color(0xFFB67332) // Utilisez 0xFF pour spécifier un code hexadécimal
+            ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),

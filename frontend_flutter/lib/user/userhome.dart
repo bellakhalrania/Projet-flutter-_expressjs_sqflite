@@ -45,7 +45,15 @@ class _UserScreenState extends State<UserScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Welcome user")),
+      appBar: AppBar( title: const Text(
+        "Welcome user",
+        style: TextStyle(
+          fontSize: 20, // Taille de police
+          fontWeight: FontWeight.bold, // Gras
+          color: Colors.white, // Couleur du texte
+        ),
+      ),
+    backgroundColor: Color(0xFFB67332),),
       body: Column(
         children: [
           // Display user information
@@ -56,14 +64,10 @@ class _UserScreenState extends State<UserScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "User Name: ${_userName ?? 'Loading...'}",
+                  " ${_userName ?? 'Loading...'}",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 8),
-                Text(
-                  "User ID: ${_userId ?? 'Loading...'}",
-                  style: TextStyle(fontSize: 16),
-                ),
+
               ],
             ),
           ),

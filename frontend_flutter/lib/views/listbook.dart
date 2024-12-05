@@ -62,17 +62,37 @@ class _BookListScreenState extends State<BookListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
 
-
-      body:
-      FutureBuilder<List<Book>>(
+      body: FutureBuilder<List<Book>>(
         future: books,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return Center(
+              child: CircularProgressIndicator(
+                color: Colors.blueAccent, // Couleur du loader
+              ),
+            );
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+            return Center(
+              child: Text(
+                'Error: ${snapshot.error}',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.redAccent, // Couleur des messages d'erreur
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            );
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No books found.'));
+            return Center(
+              child: Text(
+                'No books found.',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            );
           }
 
           final filteredBooks = snapshot.data!
@@ -83,36 +103,64 @@ class _BookListScreenState extends State<BookListScreen> {
             itemCount: filteredBooks.length,
             itemBuilder: (context, index) {
               final book = filteredBooks[index];
-              return ListTile(
-                leading: book.image != null && book.image!.isNotEmpty
-                    ? CachedNetworkImage(
-                  imageUrl: "http://192.168.1.16:3000/" + book.image!.replaceAll("\\", "/"),
-                  placeholder: (context, url) => CircularProgressIndicator(),
-                  errorWidget: (context, url, error) => Icon(Icons.broken_image),
-                  width: 50,
-                  height: 50,
-                  fit: BoxFit.cover,
-                )
-                    : Icon(Icons.book),
-                title: Text(book.title),
-                subtitle: Text(book.author),
-
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min, // To fit the icons nicely
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.edit), // Update icon
-                      onPressed: () {
-                        updateBook(book);
-                      },
+              return Card(
+                margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                elevation: 3, // Ombre légère
+                child: ListTile(
+                  contentPadding: EdgeInsets.all(12.0),
+                  leading: book.image != null && book.image!.isNotEmpty
+                      ? ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+                    child: CachedNetworkImage(
+                      imageUrl: "http://172.25.240.1:3000/" + book.image!.replaceAll("\\", "/"),
+                      placeholder: (context, url) => CircularProgressIndicator(
+                        strokeWidth: 2.0,
+                      ),
+                      errorWidget: (context, url, error) => Icon(
+                        Icons.broken_image,
+                        color: Colors.grey,
+                      ),
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.cover,
                     ),
-                    IconButton(
-                      icon: Icon(Icons.delete),
-                      onPressed: () {
-                        deleteBook(book.id);
-                      },
+                  )
+                      : Icon(Icons.book, size: 50, color: Colors.grey),
+                  title: Text(
+                    book.title,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blueAccent,
                     ),
-                  ],
+                  ),
+                  subtitle: Text(
+                    book.author,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.edit, color: Colors.green), // Icône de modification stylée
+                        onPressed: () {
+                          updateBook(book);
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.delete, color: Colors.red), // Icône de suppression rouge
+                        onPressed: () {
+                          deleteBook(book.id);
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               );
             },
@@ -120,5 +168,6 @@ class _BookListScreenState extends State<BookListScreen> {
         },
       ),
     );
+
   }
 }

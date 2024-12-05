@@ -44,7 +44,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       // Navigate to the user home screen
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => UserScreen()),
+        MaterialPageRoute(builder: (context) => LoginScreen()),
       );
     } catch (e) {
       // If an error occurs during registration
@@ -59,119 +59,152 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: Text('Register'),
+        title: Text(
+          'Register',
+          style: TextStyle(
+            fontSize: 24.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: Color(0xFFB67332),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey, // Use the key for form validation
-          child: Column(
-            children: [
-              Container(
-                height: 200,
-                width: 300,
-                child: Icon(
-                  Icons.lock_person_sharp,
-                  size: 200, // Adjust size
-                  color: Colors.brown, // Change color if needed
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Image.asset(
+                  'assets/books.png', // Remplacez par le chemin de votre image
+                  height: 300,
+                  width: 350,
                 ),
-              ),
-              SizedBox(height: 50),
-              TextFormField(
-                controller: _nameController,
-                decoration: InputDecoration(labelText: 'Name'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your name';
-                  }
-                  return null; // If validation is successful
-                },
-              ),
-              TextFormField(
-                controller: _emailController,
-                decoration: InputDecoration(labelText: 'Email'),
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your email';
-                  }
-                  // Email format validation
-                  if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) {
-                    return 'Please enter a valid email address';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _passwordController,
-                decoration: InputDecoration(labelText: 'Password'),
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your password';
-                  }
-                  if (value.length < 6) {
-                    return 'Password must be at least 6 characters';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
-              // DropdownButton for role selection
-              DropdownButtonFormField<String>(
-                value: _role,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _role = newValue!;
-                  });
-                },
-                items: <String>['user', 'admin']
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                decoration: InputDecoration(labelText: 'Role'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please select a role';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
-              Container(
-                width: 350,
-                child: ElevatedButton(
-                  onPressed: registerUser,
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white, // Button text color
-                    backgroundColor: Colors.grey, // Button background color
-                    padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
+                SizedBox(height: 40),
+                TextFormField(
+                  controller: _nameController,
+                  decoration: InputDecoration(
+                    labelText: 'Name',
+                    labelStyle: TextStyle(color: Colors.brown),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.brown),
+                    ),
+                    prefixIcon: Icon(
+                      Icons.person, // Icône pour le nom
+                      color: Colors.brown,
+                    ),
                   ),
-                  child: Text('Register'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your name';
+                    }
+                    return null;
+                  },
                 ),
-              ),
-              SizedBox(height: 20),
-              TextButton(
-                onPressed: () {
-                  // Navigate to login screen
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()),
-                  );
-                },
-                child: Text(
-                  'Already have an account? Login here',
-                  style: TextStyle(color: Colors.brown),
+                SizedBox(height: 16),
+                TextFormField(
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    labelStyle: TextStyle(color: Colors.brown),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.brown),
+                    ),
+                    prefixIcon: Icon(
+                      Icons.email, // Icône pour email
+                      color: Colors.brown,
+                    ),
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your email';
+                    }
+                    if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) {
+                      return 'Please enter a valid email address';
+                    }
+                    return null;
+                  },
                 ),
-              ),
-            ],
+                SizedBox(height: 16),
+                TextFormField(
+                  controller: _passwordController,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    labelStyle: TextStyle(color: Colors.brown),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.brown),
+                    ),
+                    prefixIcon: Icon(
+                      Icons.lock, // Icône pour indiquer un champ de mot de passe
+                      color: Colors.brown,
+                    ),
+                  ),
+                  obscureText: true,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your password';
+                    }
+                    if (value.length < 6) {
+                      return 'Password must be at least 6 characters';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 20),
+
+
+                Container(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: registerUser,
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Color(0xFFB67332),
+                      padding: EdgeInsets.symmetric(vertical: 14.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                    ),
+                    child: Text(
+                      'Register',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                    );
+                  },
+                  child: Text(
+                    'Already have an account? Login here',
+                    style: TextStyle(
+                      color: Colors.brown,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
-
     );
+
   }
 }

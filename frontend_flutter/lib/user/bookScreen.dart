@@ -51,89 +51,149 @@ class _BookScreenState extends State<BookScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:
-      FutureBuilder<List<Book>>(
+
+      body: FutureBuilder<List<Book>>(
         future: books,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+            return Center(
+              child: Text(
+                'Error: ${snapshot.error}',
+                style: TextStyle(
+                  color: Colors.red,
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            );
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No books found.'));
+            return Center(
+              child: Text(
+                'No books found.',
+                style: TextStyle(
+                  fontSize: 18.0,
+                  fontStyle: FontStyle.italic,
+                  color: Colors.grey,
+                ),
+              ),
+            );
           }
+
           final filteredBooks = snapshot.data!
               .where((book) => book.title.toLowerCase().contains(searchQuery.toLowerCase()))
               .toList();
+
           return ListView.builder(
             itemCount: filteredBooks.length,
             itemBuilder: (context, index) {
               final book = filteredBooks[index];
               return Card(
-                margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                margin: EdgeInsets.symmetric(vertical: 19.0, horizontal: 16.0), // Légèrement augmenté
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16.0),
+                ),
+                elevation: 5.0, // Shadow effect for the card
                 child: ListTile(
                   leading: book.image != null && book.image!.isNotEmpty
-                      ? CachedNetworkImage(
-                    imageUrl: "http://192.168.1.16:3000/" + book.image!.replaceAll("\\", "/"),
-                    placeholder: (context, url) => CircularProgressIndicator(),
-                    errorWidget: (context, url, error) => Icon(Icons.broken_image),
-                    width: 50,
-                    height: 50,
-                    fit: BoxFit.cover,
+                      ? Container(
+                    width: 100, // Largeur personnalisée
+                    height: 150, // Hauteur personnalisée
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0), // Coins arrondis pour les images
+                      child: CachedNetworkImage(
+                        imageUrl: "http://172.25.240.1:3000/" + book.image!.replaceAll("\\", "/"),
+                        placeholder: (context, url) => CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => Icon(Icons.broken_image),
+                        fit: BoxFit.cover,
+                        width: 150, // Largeur personnalisée
+                        height: 150,// Ajuste l'image pour remplir l'espace
+                      ),
+                    ),
                   )
-                      : Icon(Icons.book),
-                  title: Text('${book.title} (ID: ${book.id})'),
+                      : Icon(
+                    Icons.book,
+                    size: 50,
+                    color: Colors.grey,
+                  ),
+                  title: Text(
+                    '${book.title} (ID: ${book.id})',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16.0,
+                    ),
+                  ),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Author: ${book.author}'),
-                      Text('Year: ${book.year}'),
-                      SizedBox(height: 8.0), // Add spacing between text and button
+                      Text(
+                        'Author: ${book.author}',
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          color: Colors.grey[700],
+                        ),
+                      ),
+                      Text(
+                        'Year: ${book.year}',
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          color: Colors.grey[700],
+                        ),
+                      ),
+                      SizedBox(height: 8.0), // Spacing between text and button
                       ElevatedButton(
                         onPressed: () async {
                           if (_userId == null) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text('User ID is not loaded. Please try again later.'),
+                                content: Text(
+                                  'User ID is not loaded. Please try again later.',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                backgroundColor: Colors.red,
                                 duration: Duration(seconds: 2),
                               ),
                             );
-                            return; // Stop if user ID is null
+                            return;
                           }
-                          final String userId = _userId!; // Hardcoded for demo; replace with dynamic user ID
+                          final String userId = _userId!;
                           bool success = await BorrowService.createBorrowRequest(book.id.toString(), userId);
-                          if (success) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Borrow request sent successfully for "${book.title}".'),
-                                duration: Duration(seconds: 2),
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                success
+                                    ? 'Borrow request sent successfully for "${book.title}".'
+                                    : 'Failed to send borrow request for "${book.title}".',
+                                style: TextStyle(color: Colors.white),
                               ),
-                            );
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Failed to send borrow request for "${book.title}".'),
-                                duration: Duration(seconds: 2),
-                              ),
-                            );
-                          }
+                              backgroundColor: success ? Colors.green : Colors.red,
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color(0xFFB67332),
                           foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
                           padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                         ),
-                        child: Text('Borrow Book'),
+                        child: Text(
+                          'Borrow Book',
+                          style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ],
                   ),
                 ),
               );
-
             },
           );
         },
       ),
     );
+
   }
 }

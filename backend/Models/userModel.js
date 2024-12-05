@@ -21,9 +21,18 @@ const UserModel = {
     },
 
     getAllUsers: (callback) => {
-        db.all(`SELECT * FROM users`, [], callback);
+        const query = `SELECT * FROM users WHERE role = ?`;
+        const params = ['user'];
+    
+        db.all(query, params, (err, rows) => {
+            if (err) {
+                console.error('Error fetching users:', err);
+                return callback(err);
+            }
+            callback(null, rows);
+        });
     },
-
+    
     updateUser: (id, user, callback) => {
         const { name, email, role } = user;
         db.run(

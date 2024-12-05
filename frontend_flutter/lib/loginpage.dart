@@ -56,45 +56,76 @@ class _LoginScreenState extends State<LoginScreen> {
           style: TextStyle(
             fontSize: 24.0,
             fontWeight: FontWeight.bold,
-            color: Colors.brown,
+            color: Colors.white, // Couleur du texte dans la barre d'application
           ),
         ),
+        backgroundColor: Color(0xFFB67332), // Couleur de fond de la barre d'application
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center, // Centrer les éléments verticalement
           children: [
-            Container(
-              height: 200,
-              width: 300,
-              child: Icon(
-                Icons.lock_person_sharp,
-                size: 200,
-                color: Colors.brown,
-              ),
-            ),
-            SizedBox(height: 50),
+            Image.asset(
+              'assets/books.png', // Remplacez par le chemin de votre image
+              height: 300,
+              width: 350,
+            )
+           ,
+            SizedBox(height: 40),
             TextField(
               controller: _emailController,
-              decoration: InputDecoration(labelText: 'Email'),
+              decoration: InputDecoration(
+                labelText: 'Email',
+                labelStyle: TextStyle(color: Colors.brown), // Couleur du label
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.brown), // Couleur lors de la mise au point
+                ),
+                prefixIcon: Icon(
+                  Icons.email, // Icône pour email
+                  color: Colors.brown,
+                ),
+              ),
             ),
             SizedBox(height: 20),
             TextField(
               controller: _passwordController,
-              decoration: InputDecoration(labelText: 'Password'),
+              decoration: InputDecoration(
+                labelText: 'Password',
+                labelStyle: TextStyle(color: Colors.brown),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.brown),
+                ),
+                prefixIcon: Icon(
+                Icons.lock, // Icône pour indiquer un champ de mot de passe
+                color: Colors.brown,
+              ),
+              ),
               obscureText: true,
             ),
-            SizedBox(height: 16),
+            SizedBox(height: 24),
             Container(
-              width: 350,
+              width: double.infinity, // Bouton s'adapte à la largeur maximale
               child: ElevatedButton(
                 onPressed: _login,
                 style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: Colors.grey,
-                  padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
+                  foregroundColor: Colors.white, // Couleur du texte
+                  backgroundColor: Color(0xFFB67332), // Couleur du bouton
+                  padding: EdgeInsets.symmetric(vertical: 14.0), // Augmenter la hauteur
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0), // Coins arrondis
+                  ),
                 ),
-                child: Text("Login"),
+                child: Text(
+                  "Login",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
               ),
             ),
             SizedBox(height: 20),
@@ -107,12 +138,16 @@ class _LoginScreenState extends State<LoginScreen> {
               },
               child: Text(
                 "Don't have an account? Register here",
-                style: TextStyle(color: Colors.brown),
+                style: TextStyle(
+                  color: Colors.brown,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
           ],
         ),
       ),
+
     );
   }
 }

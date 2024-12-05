@@ -45,33 +45,20 @@ class _UserScreenState extends State<UserScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar( title: const Text(
-        "Welcome user",
-        style: TextStyle(
-          fontSize: 20, // Taille de police
-          fontWeight: FontWeight.bold, // Gras
-          color: Colors.white, // Couleur du texte
+      appBar: AppBar(
+        title: Text(
+          _userName != null ? "Welcome  $_userName" : "Welcome user",
+          style: TextStyle(
+            fontSize: 20, // Taille de police
+            fontWeight: FontWeight.bold, // Gras
+            color: Colors.white, // Couleur du texte
+          ),
         ),
+        backgroundColor: Color(0xFFB67332),
       ),
-    backgroundColor: Color(0xFFB67332),),
+
       body: Column(
         children: [
-          // Display user information
-          Container(
-            padding: EdgeInsets.all(16.0),
-            color: Colors.grey.shade200,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  " ${_userName ?? 'Loading...'}",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-
-              ],
-            ),
-          ),
-          // Display the selected screen
           Expanded(
             child: _screens[_selectedIndex],
           ),

@@ -35,6 +35,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       final userName = _nameController.text;
       await _storage.write(key: 'userName', value: userName);
+      await _storage.write(key: 'role', value:  _role);
 
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Registration successful!'),
@@ -56,6 +57,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text('Register'),
       ),
@@ -169,6 +171,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
         ),
       ),
+
     );
   }
 }

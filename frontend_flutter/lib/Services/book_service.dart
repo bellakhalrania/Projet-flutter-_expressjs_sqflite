@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import '../Models/book_model.dart';
 
 class BookService {
-  static const String baseUrl = 'http://192.168.1.16:3000/api/books';
+  static const String baseUrl = 'http://172.25.240.1:3000/api/books';
 
   // Obtenir tous les livres
   static Future<List<Book>> getBooks() async {

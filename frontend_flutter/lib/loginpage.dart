@@ -61,90 +61,91 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         backgroundColor: Color(0xFFB67332), // Couleur de fond de la barre d'application
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center, // Centrer les éléments verticalement
-          children: [
-            Image.asset(
-              'assets/books.png', // Remplacez par le chemin de votre image
-              height: 300,
-              width: 350,
-            )
-           ,
-            SizedBox(height: 40),
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(
-                labelText: 'Email',
-                labelStyle: TextStyle(color: Colors.brown), // Couleur du label
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.brown), // Couleur lors de la mise au point
-                ),
-                prefixIcon: Icon(
-                  Icons.email, // Icône pour email
-                  color: Colors.brown,
-                ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/books.png',
+                height: 300,
+                width: 350,
               ),
-            ),
-            SizedBox(height: 20),
-            TextField(
-              controller: _passwordController,
-              decoration: InputDecoration(
-                labelText: 'Password',
-                labelStyle: TextStyle(color: Colors.brown),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.brown),
-                ),
-                prefixIcon: Icon(
-                Icons.lock, // Icône pour indiquer un champ de mot de passe
-                color: Colors.brown,
-              ),
-              ),
-              obscureText: true,
-            ),
-            SizedBox(height: 24),
-            Container(
-              width: double.infinity, // Bouton s'adapte à la largeur maximale
-              child: ElevatedButton(
-                onPressed: _login,
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white, // Couleur du texte
-                  backgroundColor: Color(0xFFB67332), // Couleur du bouton
-                  padding: EdgeInsets.symmetric(vertical: 14.0), // Augmenter la hauteur
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.0), // Coins arrondis
+              SizedBox(height: 40),
+              TextField(
+                controller: _emailController,
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  labelStyle: TextStyle(color: Colors.brown),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.brown),
+                  ),
+                  prefixIcon: Icon(
+                    Icons.email,
+                    color: Colors.brown,
                   ),
                 ),
+              ),
+              SizedBox(height: 20),
+              TextField(
+                controller: _passwordController,
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  labelStyle: TextStyle(color: Colors.brown),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.brown),
+                  ),
+                  prefixIcon: Icon(
+                    Icons.lock,
+                    color: Colors.brown,
+                  ),
+                ),
+                obscureText: true,
+              ),
+              SizedBox(height: 24),
+              Container(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: _login,
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Color(0xFFB67332),
+                    padding: EdgeInsets.symmetric(vertical: 14.0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                  ),
+                  child: Text(
+                    "Login",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => RegisterScreen()),
+                  );
+                },
                 child: Text(
-                  "Login",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  "Don't have an account? Register here",
+                  style: TextStyle(
+                    color: Colors.brown,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 20),
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => RegisterScreen()),
-                );
-              },
-              child: Text(
-                "Don't have an account? Register here",
-                style: TextStyle(
-                  color: Colors.brown,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
 

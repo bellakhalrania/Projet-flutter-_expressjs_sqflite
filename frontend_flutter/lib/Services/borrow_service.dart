@@ -7,7 +7,7 @@ import '../Models/borrowRequest.dart';
 
 class BorrowService {
   // Remplacez par l'URL de votre serveur backend
-  static const String _baseUrl = 'http://172.25.240.1:3000/api';
+  static const String _baseUrl = 'http://192.168.56.1:3000/api';
 
   /// Crée une demande d'emprunt
   static Future<bool> createBorrowRequest(String bookId, String userId) async {

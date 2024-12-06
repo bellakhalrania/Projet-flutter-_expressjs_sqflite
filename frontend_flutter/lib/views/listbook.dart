@@ -115,7 +115,7 @@ class _BookListScreenState extends State<BookListScreen> {
                       ? ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
                     child: CachedNetworkImage(
-                      imageUrl: "http://172.25.240.1:3000/" + book.image!.replaceAll("\\", "/"),
+                      imageUrl: "http://192.168.56.1:3000/" + book.image!.replaceAll("\\", "/"),
                       placeholder: (context, url) => CircularProgressIndicator(
                         strokeWidth: 2.0,
                       ),

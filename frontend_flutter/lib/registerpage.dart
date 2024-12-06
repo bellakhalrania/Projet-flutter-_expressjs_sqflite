@@ -71,9 +71,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey, // Use the key for form validation
-          child: SingleChildScrollView(
+        child: SingleChildScrollView( // Déplacez SingleChildScrollView ici
+          child: Form(
+            key: _formKey, // Utilisez la clé pour la validation du formulaire
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -163,8 +163,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   },
                 ),
                 SizedBox(height: 20),
-
-
                 Container(
                   width: double.infinity,
                   child: ElevatedButton(

@@ -33,54 +33,66 @@ class _BorrowScreenState extends State<BorrowScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Borrowed Books'),
-      ),
       body: _userId == null
           ? Center(child: Text('User not logged in'))
-          : FutureBuilder<List<BorrowRequest>>(
-        future: borrowedBooks,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No borrowed books found.'));
-          }
+          : Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              'list Borrowed Books', // Title without AppBar
+              style: TextStyle(
+                fontSize: 26, // Adjust font size as needed
+                fontWeight: FontWeight.bold,
+                color: Color(0xFFB67332), // Your preferred color
+              ),
+            ),
+          ),
+          Expanded(
+            child: FutureBuilder<List<BorrowRequest>>(
+              future: borrowedBooks,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return Center(child: Text('No borrowed books found.'));
+                }
 
-          final books = snapshot.data!;
-          return ListView.builder(
-            itemCount: books.length,
-            itemBuilder: (context, index) {
-              final book = books[index];
-              return Card(
-                margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                child: ListTile(
-                  leading: Icon(Icons.book),
-                  title: Text(book.title),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Author: ${book.author}'),
-                      Text(
-                        'Status: ${book.status}',
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
-                          color: _getStatusColor(book.status), // Dynamically change color based on status
+                final books = snapshot.data!;
+                return ListView.builder(
+                  itemCount: books.length,
+                  itemBuilder: (context, index) {
+                    final book = books[index];
+                    return Card(
+                      margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                      child: ListTile(
+                        leading: Icon(Icons.book),
+                        title: Text(book.title),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Author: ${book.author}'),
+                            Text(
+                              'Status: ${book.status}',
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                                color: _getStatusColor(book.status), // Dynamic status color
+                              ),
+                            ),
+                            Text('Request Date: ${book.requestDate}'),
+                          ],
                         ),
                       ),
-
-
-                      Text('Request Date: ${book.requestDate}'),
-                    ],
-                  ),
-                ),
-              );
-            },
-          );
-        },
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

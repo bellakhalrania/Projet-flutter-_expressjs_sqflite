@@ -27,6 +27,8 @@ class WelcomeScreen extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
+                  fontFamily: 'DMSerifText', // Nom de la police configurée dans pubspec.yaml
+                  fontStyle: FontStyle.italic,
                   color: Color(0xFFB67332), // Texte en couleur principale
                 ),
                 textAlign: TextAlign.center,

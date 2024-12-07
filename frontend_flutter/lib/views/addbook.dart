@@ -44,7 +44,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Book added successfully!')),
         );
-        Navigator.pop(context);
+       // Navigator.pop(context);
       } catch (e) {
         print('Error adding book: $e');
         ScaffoldMessenger.of(context).showSnackBar(
@@ -210,6 +210,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
                   // Bouton pour ajouter le livre
                   ElevatedButton(
                     onPressed: _submit,
+
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFFB67332),
                       shape: RoundedRectangleBorder(

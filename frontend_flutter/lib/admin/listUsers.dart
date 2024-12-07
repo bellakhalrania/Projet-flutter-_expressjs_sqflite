@@ -13,6 +13,7 @@ class _UserListPageState extends State<UserListPage> {
   List<dynamic>? _users;
   bool _loading = true;
   String? _errorMessage;
+  String searchQuery = ''; // Variable pour la recherche
 
   @override
   void initState() {
@@ -36,17 +37,53 @@ class _UserListPageState extends State<UserListPage> {
     return Scaffold(
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              'User List',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.blueAccent, // Changer la couleur du titre
+          // Champ de recherche sous forme de carte
+          Stack(
+            children: [
+              // Image en arrière-plan
+              Container(
+                height: 120, // Hauteur de la zone du champ de recherche
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/background2.jpg"), // Votre image
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
-            ),
+              // Carte du champ de recherche
+              Positioned(
+                top: 40, // Position verticale
+                left: 16,
+                right: 16,
+                child: Card(
+                  elevation: 4.0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0,
+                      vertical: 8.0,
+                    ),
+                    child: TextField(
+                      onChanged: (value) {
+                        setState(() {
+                          searchQuery = value;
+                        });
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'Search users...',
+                        border: InputBorder.none,
+                        prefixIcon: Icon(Icons.search, color: Colors.blueAccent),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
+          // Liste des utilisateurs
           _loading
               ? Expanded(
             child: Center(
@@ -73,6 +110,15 @@ class _UserListPageState extends State<UserListPage> {
               itemCount: _users?.length ?? 0,
               itemBuilder: (context, index) {
                 final user = _users![index];
+
+                // Filtrage des utilisateurs en fonction de la recherche
+                if (searchQuery.isNotEmpty &&
+                    !user['name']
+                        .toLowerCase()
+                        .contains(searchQuery.toLowerCase())) {
+                  return Container(); // Masquer l'élément non correspondant
+                }
+
                 return Card(
                   margin: EdgeInsets.symmetric(
                       vertical: 8.0, horizontal: 16.0),
@@ -84,16 +130,17 @@ class _UserListPageState extends State<UserListPage> {
                     contentPadding: EdgeInsets.all(12.0),
                     leading: CircleAvatar(
                       child: Text(
-                        user['name'][0], // Affiche la première lettre
+                        user['name'][0], // Première lettre du nom
                         style: TextStyle(color: Colors.white),
                       ),
-                      backgroundColor: Colors.blueAccent, // Couleur de l'avatar
+                      backgroundColor: Colors.orange, // Couleur de l'avatar
                     ),
                     title: Text(
                       user['name'],
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
+                        color: Colors.blueAccent,
                       ),
                     ),
                     subtitle: Text(

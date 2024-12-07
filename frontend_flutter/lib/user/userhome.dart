@@ -49,9 +49,13 @@ class _UserScreenState extends State<UserScreen> {
         title: Text(
           _userName != null ? "Welcome  $_userName" : "Welcome user",
           style: TextStyle(
-            fontSize: 20, // Taille de police
+             // Taille de police
             fontWeight: FontWeight.bold, // Gras
-            color: Colors.white, // Couleur du texte
+            color: Colors.white,
+              fontSize: 25,
+              fontFamily: 'DMSerifText', // Nom de la police configurée dans pubspec.yaml
+             // Texte en couleur principale
+            // Couleur du texte
           ),
         ),
         backgroundColor: Color(0xFFB67332),

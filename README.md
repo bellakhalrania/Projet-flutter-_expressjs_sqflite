@@ -5,14 +5,21 @@
 
 ## frontend : flutter
 ``` flutter pub get ```
-![Capture d'écran 2024-12-05 134600](https://github.com/user-attachments/assets/97f1c5c7-ee5d-4010-aa20-1d94d1174022)
-![Capture d'écran 2024-12-05 134615](https://github.com/user-attachments/assets/ab51c407-6f29-486d-9e3f-401cdd6d3ba8)
-![Capture d'écran 2024-12-05 134626](https://github.com/user-attachments/assets/76ce13fc-f3b8-4afe-9ac9-fb920fa86cdc)
-![Capture d'écran 2024-12-05 140138](https://github.com/user-attachments/assets/cd6cb6bf-8180-42fe-97c9-82ee16ba551a)
-![Capture d'écran 2024-12-05 140054](https://github.com/user-attachments/assets/3a0e3a67-9020-4713-b10b-50908f5ed9a3)
-![Capture d'écran 2024-12-05 140114](https://github.com/user-attachments/assets/3c222d87-a490-4f7a-90df-83d848e474af)
-![Capture d'écran 2024-12-05 140016](https://github.com/user-attachments/assets/1ecdc86d-e0d0-4c29-81fb-7405189dd03c)
 
-![Capture d'écran 2024-12-05 142458](https://github.com/user-attachments/assets/27059928-2ef7-4c83-a05e-15c114d5f331)
+![Capture d'écran 2024-12-08 102844](https://github.com/user-attachments/assets/587cc095-ddbb-4e9b-8c2f-431509509248)
+![Capture d'écran 2024-12-08 102917](https://github.com/user-attachments/assets/aba256dd-0957-4cdb-ae13-dc2d13bf3e58)
+
+![Capture d'écran 2024-12-08 102942](https://github.com/user-attachments/assets/096cefb4-2dfa-48f3-a7d7-380c47e70abb)
+![Capture d'écran 2024-12-08 103008](https://github.com/user-attachments/assets/dd23b34c-d5d2-4aed-b44e-c320fa124cf6)
+![Capture d'écran 2024-12-08 104402](https://github.com/user-attachments/assets/3089c9a1-2a3b-47a8-b462-4a440e766b64)
+![Capture d'écran 2024-12-08 103306](https://github.com/user-attachments/assets/66abe93d-3a83-4db0-b9f7-f48f46894737)
+![Capture d'écran 2024-12-08 103136](https://github.com/user-attachments/assets/191f5edf-e34a-4073-bdf3-ac2df9675b5f)
+
+![Capture d'écran 2024-12-08 103256](https://github.com/user-attachments/assets/68f07327-423d-48d4-8b4a-32048ca8e2fb)
+![Capture d'écran 2024-12-08 104521](https://github.com/user-attachments/assets/9acb8c0d-ba28-4c04-a37a-7f32c4b47cfd)
+
+![Capture d'écran 2024-12-08 104505](https://github.com/user-attachments/assets/46783ec9-ffad-4672-9977-3f643b0eb7c0)
+![Capture d'écran 2024-12-08 104533](https://github.com/user-attachments/assets/459a85d7-9678-4a2c-8ea5-c6f78aa382a6)
+![image](https://github.com/user-attachments/assets/27ff752e-4610-4e26-9b9e-ba113305fffd)
 
 

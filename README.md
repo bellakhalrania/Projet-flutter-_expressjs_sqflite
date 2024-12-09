@@ -5,6 +5,8 @@
 
 ## frontend : flutter
 ``` flutter pub get ```
+## 📺 Watch Video
+https://www.youtube.com/watch?v=TovUTLGZHZk&t=50s
 
 ![Capture d'écran 2024-12-08 102844](https://github.com/user-attachments/assets/587cc095-ddbb-4e9b-8c2f-431509509248)
 ![Capture d'écran 2024-12-08 102917](https://github.com/user-attachments/assets/aba256dd-0957-4cdb-ae13-dc2d13bf3e58)
